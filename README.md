@@ -73,18 +73,18 @@ The agent is trained for 500 episodes. In each episode it will start from state 
 
 Learning rate is fine tuned such that the cost can converage without exploding. In the discussion we will further talk about the observations of how hyper-parameters influence the learning.
 
-<p align="center"> <img src="img/route_optimal.png"> </p>
+<p align="center"> <img src="img/route_optimal.PNG"> </p>
 <p align = "center"> <b> Figure 5. Shortest Path Statisfying the Constraints after Training </b> </p>
 
 As shown in _Figure 5_, the agent follows the path (blue line) which successfully avoid the obstacles (black squares) and arrives at the goal. The sequence of states is [0, 5, 10, 15, 16, 17, 12, 7, 8, 9, 14, 19, 24]. The agent successfully takes the punishments and reward from the far future into account.
-<p align="center"> <img src="img/costs.png"> </p>
+<p align="center"> <img src="img/costs.PNG"> </p>
 <p align = "center"> <b> Figure 6. Cost at the nth Episode </b> </p>
 
 ## Discussion
 
 1. Reward of the goal has to be larger if it requires many time steps to arrive. This can be illustrated by reducing the reward of the goal (e.g. 100, while maintaing its ratio with the punishment), the agent will fail to find the goal while circulating around the initial local area, because the goal reward is too far away and cannot influence the Q-scores at initial state (discounted too much from many steps ahead).
 
-<p align="center"> <img src="img/route_all.png"> </p>
+<p align="center"> <img src="img/route_all.PNG"> </p>
 <p align = "center"> <b> Figure 7. Different Training Results. The agent follows the optimal route (blue), bypasses obstacles (red) or gets trapped in an infinite loop (magenta).  </b> </p>
 
 2. Punishment (negative reward) has to be large enough for undesired path (e.g. 5 times more than the goal's). Otherwise the agent will choose the undesired path rather than a long detour (e.g. 17 -> 22 -> 23 -> 24, rather than 17 -> 12 -> 7 -> 8 -> 9 -> 14 -> 19 -> 24, as shown in the red line in _Figure 7_), because positive reward is less discounted in fewer time steps and it attracts the agent to overcome the punishment. This problem can be reproduced by reducing the ratio of punichment to goal's reward, e.g. from (-2500, 500) to (-500, 500). In this case, the agent will bypass the obstacles even with the punishment (_Figure 7_).
